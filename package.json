@@ -9,7 +9,7 @@
   "scripts": {
     "build": "tsc && chmod +x build/index.js",
     "prepare": "npm run build",
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "echo \"Error: no test specified\" && exit 1", 
     "inspect": "tsc && node --inspect dist/index.js",
     "inspect-debug": "tsc && node --inspect-brk dist/index.js",
     "dev:debug": "node --inspect-brk -r ts-node/register src/index.ts",
@@ -22,12 +22,15 @@
   "author": "",
   "license": "ISC",
   "description": "",
+  "engines": {
+    "node": "16.x"
+  },
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.7.0",
-    "zod": "^3.24.2"
+    "zod": "^3.20.6"
   },
   "devDependencies": {
-    "@types/node": "^22.13.10",
-    "typescript": "^5.8.2"
+    "@types/node": "^16.18.68",
+    "typescript": "^4.9.5"
   }
 }
