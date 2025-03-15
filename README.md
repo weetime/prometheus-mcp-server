@@ -1,24 +1,21 @@
-# Prometheus MCP
+# prometheus-mcp-server
 
-A Prometheus client that implements the Model Context Protocol (MCP) to provide an interface for querying and interacting with Prometheus metrics.
+![Prometheus MCP Server](images/prometheus-mcp-server.jpg)
 
-## Overview
+A Model Context Protocol (MCP) server for interacting with Prometheus metrics and data.
 
-This project provides a bridge between Prometheus and AI assistants using the Model Context Protocol. It allows AI assistants to query Prometheus metrics, explore available metrics, and perform various operations on time series data.
+This is a TypeScript-based MCP server that implements a Prometheus API interface. It provides a bridge between Claude and your Prometheus server through the Model Context Protocol (MCP).
 
 ## Features
 
-- Query instant metrics from Prometheus
-- Perform range queries over time periods
-- List available metrics and their metadata
-- Execute PromQL queries
-- Format results in human-readable format
-- Explore labels and label values
-
-## Prerequisites
-
-- Node.js (v16 or higher)
-- A running Prometheus server (default: http://localhost:9090)
+- **Instant Queries**: Execute PromQL queries at a specific time
+- **Range Queries**: Execute PromQL queries over a time period
+- **Series Discovery**: Find series by label matchers
+- **Label Exploration**: Get label names and values
+- **Metadata Access**: Get metadata for metrics
+- **Target Information**: Get information about scrape targets
+- **Alerts & Rules**: Get information about alerts and recording rules
+- **Status Information**: Get Prometheus server status information
 
 ## Installation
 
@@ -28,44 +25,67 @@ npm install -g prometheus-mcp-server
 
 # Or install locally
 npm install prometheus-mcp-server
+
+# Or use npx to run without installation
+npx prometheus-mcp-server
 ```
 
-## Usage
+## Usage with Claude
 
-### As a Command Line Tool
+To use with Claude Desktop, add the server config:
 
-```bash
-# Run the MCP server
-prometheus-mcp-server
+**On MacOS**: `~/Library/Application Support/Claude/claude_desktop_config.json`
+**On Windows**: `%APPDATA%/Claude/claude_desktop_config.json`
+
+```json
+{
+  "mcpServers": {
+    "prometheus-mcp-server": {
+      "command": "/path/to/prometheus-mcp-server/build/index.js",
+      "env": {
+        "PROMETHEUS_HOST": "http://your-prometheus-instance:9090"
+      }
+    }
+  }
+}
 ```
 
-### In Your Project
+### Using with npx
 
-```javascript
-import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
-import prometheusClient from "prometheus-mcp-server";
+You can also use npx in your Claude Desktop configuration:
 
-// Initialize and use the client
-// ...
+```json
+{
+  "mcpServers": {
+    "prometheus-mcp-server": {
+      "command": "npx prometheus-mcp-server",
+      "env": {
+        "PROMETHEUS_HOST": "http://your-prometheus-instance:9090"
+      }
+    }
+  }
+}
 ```
 
 ## Configuration
 
-By default, the client connects to a Prometheus server running at `http://localhost:9090`. You can modify the `PROMETHEUS_API_BASE` constant in the source code to point to your Prometheus instance.
+The server requires the following environment variable:
+
+- `PROMETHEUS_HOST`: The base URL of your Prometheus instance (default: `http://localhost:9090`)
 
 ## Available Functions
 
-The client provides the following functions:
+The server provides the following functions:
 
-- `queryInstant`: Execute an instant query at a specific time
-- `queryRange`: Execute a range query over a time period
-- `listMetrics`: List all available metrics
-- `getMetricMetadata`: Get metadata for specific metrics
-- `getLabelNames`: Get all label names
-- `getLabelValues`: Get values for a specific label
-- `getTargets`: Get information about scrape targets
-- `getAlerts`: Get information about alerts
-- `getRules`: Get information about recording and alerting rules
+- `mcp__instant_query`: Execute an instant PromQL query
+- `mcp__range_query`: Execute a range PromQL query over a time period
+- `mcp__get_series`: Find series by label matchers
+- `mcp__get_label_values`: Get values for a specific label
+- `mcp__get_metadata`: Get metadata for metrics
+- `mcp__get_targets`: Get information about scrape targets
+- `mcp__get_alerts`: Get information about alerts
+- `mcp__get_rules`: Get information about recording and alerting rules
+- `mcp__get_status`: Get status information about the Prometheus server
 
 ## Development
 
@@ -81,6 +101,18 @@ npm start
 
 # Debug
 npm run dev:debug
+```
+
+## Debugging
+
+Since MCP servers communicate over stdio, debugging can be challenging. You can use the following npm scripts for debugging:
+
+```bash
+# Inspect mode
+npm run inspect
+
+# Inspect with breakpoints
+npm run inspect-debug
 ```
 
 ## License

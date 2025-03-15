@@ -4,7 +4,9 @@ import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
 import { z } from "zod";
 
-const PROMETHEUS_API_BASE = "http://localhost:9090/api/v1";
+// Get Prometheus base URL from environment variable or use default
+const PROMETHEUS_HOST = process.env.PROMETHEUS_HOST || "http://localhost:9090";
+const PROMETHEUS_API_BASE = `${PROMETHEUS_HOST}/api/v1`;
 const USER_AGENT = "prometheus-client/1.0";
 
 // Create server instance
@@ -786,6 +788,7 @@ async function main() {
   const transport = new StdioServerTransport();
   await server.connect(transport);
   console.error("Prometheus MCP Server running on stdio");
+  console.error(`Connected to Prometheus at: ${PROMETHEUS_HOST}`);
 }
 
 main().catch((error) => {
