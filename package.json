@@ -10,8 +10,8 @@
     "build": "tsc && chmod +x build/index.js",
     "prepare": "npm run build",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "inspect": "tsc && node --inspect dist/index.js",
-    "inspect-debug": "tsc && node --inspect-brk dist/index.js",
+    "inspect": "tsc && node --inspect build/index.js",
+    "inspect-debug": "tsc && node --inspect-brk build/index.js",
     "dev:debug": "node --inspect-brk -r ts-node/register src/index.ts",
     "start": "node build/index.js"
   },
