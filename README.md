@@ -51,7 +51,14 @@ import prometheusClient from "prometheus-mcp-server";
 
 ## Configuration
 
-By default, the client connects to a Prometheus server running at `http://localhost:9090`. You can modify the `PROMETHEUS_API_BASE` constant in the source code to point to your Prometheus instance.
+By default, the client connects to a Prometheus server running at `http://localhost:9090`. You can configure the Prometheus server URL by setting the `PROMETHEUS_BASE_URL` environment variable:
+
+```bash
+# Example: Connect to a different Prometheus server
+PROMETHEUS_BASE_URL=http://my-prometheus-server:9090 prometheus-mcp-server
+```
+
+This allows you to point the client to any Prometheus instance without modifying the source code.
 
 ## Available Functions
 
